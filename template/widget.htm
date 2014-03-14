@@ -3,7 +3,6 @@
 function tpl_auth0_login_widget() {
 }
 <!--{block return}-->
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <!-- TODO: file to heavy, fetch after loading -->
 <script type="text/javascript" src="{$_G[siteurl]}source/plugin/auth0login/static/js/auth0-widget-2.5.min.js"></script>
 <link rel="stylesheet" href="{$_G[siteurl]}source/plugin/auth0login/static/css/zocial.min.css" type="text/css" media="all" />
@@ -22,21 +21,20 @@ function tpl_auth0_login_widget() {
         font-size: 20px;
     }
 </style>
+<div class="y" id="auth0-login-form"><i class="icon">r</i><i class="icon">u</i><span>注册</span></div>
 <script >
-    var widget;
-    $(document).ready(function() {
-        widget = new Auth0Widget({
+    	var widget;
+	widget = new Auth0Widget({
             domain:         'hrajchert.auth0.com',
             clientID:       'PiUe1wTxxieYuoPhF3inu9ZEDWfAnmDW',
-	    callbackURL:    'http://auth0-discuz.cloudapp.net/source/plugin/auth0login/callback.php'
+	    callbackURL:    'http://auth0-discuz.cloudapp.net/plugin.php?id=auth0login&op=callback'
         });
-        $('#auth0-login-form').on('click',function(){
+	var loginButton = document.getElementById('auth0-login-form');
+	loginButton.addEventListener('click',function(){
 		widget.signin();
 		return false;
         });
-    });     
 </script>
-<button class="y" id="auth0-login-form"><i class="icon">r</i><i class="icon">u</i><span>注册</span></button>
 <!--{/block}-->
 <!--{eval return $return;}-->
 {eval

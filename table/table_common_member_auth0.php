@@ -20,5 +20,9 @@ class table_common_member_auth0 extends discuz_table {
 		$bind = array("id" => $auth0Member["uid"], "auth0_id" => $auth0User["user_id"], "is_bound"=>1);
 		return $this->insert($bind, false, true);
 	}
+
+	public function deleteByUid($uid) { 
+		return $uid ? DB::delete($this->_table, DB::field('id', $uid)) : false;
+	}
 }
 

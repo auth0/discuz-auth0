@@ -4,22 +4,12 @@ if(!defined('IN_DISCUZ')) {
 	exit('Access Denied');
 }
 class plugin_auth0login {
-	function __construct() {
-//		include 'common.php';
-		global $_G;
-/*		$this->identifier = $IDENTIFIER;
-		$this->siteid = trim($_G['cache']['plugin'][$IDENTIFIER]['siteid']);
-		$this->iconurl = trim($_G['cache']['plugin'][$IDENTIFIER]['iconurl']);
-		$this->comment = trim($_G['cache']['plugin'][$IDENTIFIER]['comment']);
-		$this->autobind = $_G['cache']['plugin'][$IDENTIFIER]['autobind'];
-		$this->fromuid = (!empty($_G['cookie']['promotion']) && $_G['setting']['creditspolicy']['promotion_register'])? intval($_G['cookie']['promotion']) : 0;
-		$this->extra = ($this->fromuid)? "&fromuid={$this->fromuid}" : '';
-		$this->href = $AUTHURL.'?siteid='.$this->siteid.'&autobind='.$this->autobind.$this->extra;
-		$this->showlogin = ($_G['uid'] || $_G['setting']['bbclosed'] || periodscheck('visitbanperiods', 0))? false : true;*/
-	}
+	
 	function global_login_extra() {
+		global $_G;
+		$settings = $_G['cache']['plugin']['auth0login'];
 		include_once template('auth0login:widget');	
-		return tpl_auth0_login_widget();
+		return tpl_auth0_login_widget($settings);
 	}
 
 	// Hook into the global delete member function to delete the user from the auth0 db if needed	

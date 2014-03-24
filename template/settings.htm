@@ -1,0 +1,152 @@
+<link rel="stylesheet" href="{$_G['siteurl']}source/plugin/auth0login/static/css/zocial.min.css" type="text/css" media="all" />
+<link rel="stylesheet" href="{$_G['siteurl']}source/plugin/auth0login/static/css/button.css" type="text/css" media="all" />
+<style>
+	.btn-widget {
+		margin: auto;
+		width: 60%;
+		height: 200px;
+		display: flex;
+		flex-direction: row-reverse;
+		align-items: center;
+	}
+	.preview-panel {
+		height: 100%;
+		flex:1;
+		display: flex;
+		flex-direction: column;
+		margin-left: 20px;
+		justify-content: center;
+	}
+	.auth0btn {
+		align-self: center;
+	}
+	.edit-panel {
+		height: 100%;
+		flex: 3;
+		display: flex;
+		flex-direction: column;
+	}
+	.save-btn {
+		flex: 1;
+		align-self: flex-end;
+	}
+	.icons {
+		flex: 2;
+	}
+	.text-widget {
+		flex:1;
+	}
+	#msg {
+		flex:3;
+	}
+	.icons .icon {
+		cursor: pointer;
+	}
+
+		
+</style>
+<form action="/admin.php?action=plugins&operation=config&identifier=auth0login&pmod=settings&ac=changemessage" method="POST" class="btn-widget">
+	<div class="preview-panel">
+		<div class="auth0btn">{$settings['message']}</div>
+	</div>
+	<div class="edit-panel">	
+		<div class="icons">
+			<i class="icon">G</i>
+			<i class="icon">f</i>
+			<i class="icon">W</i>
+			<i class="icon">L</i>
+			<i class="icon">g</i>
+			<i class="icon">$</i>
+			<i class="icon">T</i>
+			<i class="icon">a</i>
+			<i class="icon">N</i>
+			<i class="icon">&</i>
+			<i class="icon">Y</i>
+			<i class="icon">b</i>
+			<i class="icon">x</i>
+			<i class="icon">*</i>
+			<i class="icon">#</i>
+			<i class="icon">u</i>
+			<i class="icon">r</i>
+			<i class="icon">l</i>
+			<i class="icon">s</i>
+			<i class="icon">D</i>
+			<i class="icon">!</i>
+			<i class="icon">t</i>
+			<i class="icon">m</i>
+		</div>
+		<div class="text-widget">
+			<input id="text-widget-input" type="text" placeholder="Text"></input>
+			<a id="add-text">Add</a>
+		</div>
+		<textarea id="msg" name="msg">
+			{$settings['message']}	
+		</textarea>
+		<div class="save-btn">
+			<input id="submit-button" type="submit" class="btn" value="Save"></input>
+		</div>
+	</div>
+
+</div>
+<script>
+    var msgBox = document.getElementById("msg"),
+        previewButton = document.getElementsByClassName("auth0btn")[0],
+        textWidget = document.getElementById("text-widget-input"),
+        addTextBtn = document.getElementById("add-text"),
+        submitBtn = document.getElementById("submit-button"),
+        icons = document.getElementsByClassName("icons")[0].childNodes;
+    
+        
+        
+    // Function that updates the preview button with whatever is on 
+    // the msgBox
+    function updatePreview() {
+        previewButton.innerHTML = msgBox.value;
+    }
+    
+    // If you change the msgBox, the preview is updated 
+    msgBox.addEventListener("keyup", updatePreview);
+    
+    // When a provider icon is clicked, insert the icon
+    // in the msgBox and update the preview
+    function onIconClick(ev) {
+        // Update the msgBox
+        msgBox.value += ev.currentTarget.outerHTML
+        // Update the preview
+        updatePreview();
+    }
+    // Add the handlers for all icons
+    for (var i=0; i< icons.length; i++) {
+        if (icons[i].className !== "icon") {
+            continue;
+        }
+        icons[i].addEventListener("click", onIconClick);
+    }
+    
+    // Handler of when text is added
+    function onAddText() {
+        // Insert the text in the msgBox
+        msgBox.value += "<span>"+textWidget.value+"</span>";
+        // Update the preview
+        updatePreview();
+        // Delete the text, so you can add some more
+        textWidget.value = "";
+    }
+    
+    addTextBtn.addEventListener("click", onAddText);
+    textWidget.addEventListener('keypress',function (ev){
+          if (ev.keyCode === 13){   
+		  onAddText();
+		  ev.preventDefault();
+		  return false;
+          }
+    });
+    
+    function htmlEntities(str) {
+        return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+    submitBtn.addEventListener("click", function(){ 
+        msgBox.value = htmlEntities(msgBox.value.trim());
+    });
+
+</script>	

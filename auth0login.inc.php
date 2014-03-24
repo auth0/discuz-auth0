@@ -14,6 +14,10 @@ function _redirect($url) {
 }
 
 $op = $_GET["op"];
+if ($op == "check") {
+	$settings = $_G['cache']['plugin']['auth0login'];
+	var_dump($settings);
+} else
 if ($op == "callback") {
 	// If the user is already login, show them home
 	if ($_G["uid"]) {
@@ -22,12 +26,12 @@ if ($op == "callback") {
 	// Get the user information using the auth protocol
 	require_once "vendor/autoload.php";
 
-
+	$settings = $_G['cache']['plugin']['auth0login'];
 	$auth0 = new Auth0(array(
-		'domain'        => 'hrajchert.auth0.com',
-		'client_id'     => 'PiUe1wTxxieYuoPhF3inu9ZEDWfAnmDW',
-		'client_secret' => 'Jy37wZUINpEwUXqobsuLVqe7ArXN-zJZCs3UgXofDPt-f07IArPIdG6R6KzHOi1G',
-		'redirect_uri'  => 'http://auth0-discuz.cloudapp.net/forum.php',
+		'domain'        => $settings['domain'],
+		'client_id'     => $settings['clientid'], 
+		'client_secret' => $settings['secret'],
+		'redirect_uri'  => $_G['siteurl'] . 'forum.php',
 		'debug'         => true
 	));
 
@@ -54,7 +58,7 @@ if ($op == "callback") {
 	$auth0Member["email"]    = $auth0User["email"];
 	$emailstatus	= $auth0User["email_verified"];
 	if (trim($auth0Member["email"]) == "") {
-		 $auth0Member["email"] = $auth0User["nickname"] . "@auth0.com";
+		 $auth0Member["email"] = uniqid() . "@changethis.com";
 		 $emailstatus = false;
 	}
 
@@ -67,7 +71,7 @@ if ($op == "callback") {
 		}
 
 		if ($uc_result == -6) {
-			$auth0Member["email"] = $auth0User["nickname"] . rand(0,100) . "@auth0.com";
+		 	$auth0Member["email"] = uniqid() . "@changethis.com";
 			$emailstatus = false;
 		}
 	} while ($uc_result == -3 || $uc_result == -6); // Try to register until we find a valid username and email

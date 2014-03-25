@@ -34,29 +34,4 @@ class plugin_auth0login_member extends plugin_auth0login {
 		}
 	}
 }
-/*
-class plugin_darglogin_member extends plugin_darglogin {
-	function logging_method() {
-		return $this->login_link();
-	}
-	function register_logging_method() {
-		return $this->login_link();
-	}
-}
-
-class mobileplugin_darglogin extends plugin_darglogin {
-	function __construct() {
-		parent::__construct();
-		global $_G;
-		$this->mobilelink = addslashes(trim($_G['cache']['plugin'][$this->identifier]['mobilelink']));
-		$this->touchlink = addslashes(trim($_G['cache']['plugin'][$this->identifier]['touchlink']));
-	}
-	function global_footer_mobile() {
-		if(!$this->showlogin) return '';
-		if(!defined('CURSCRIPT') || CURSCRIPT!='forum') return;
-		include template($this->identifier.':login');
-		return $return;
-	}
-}
-*/
 ?>

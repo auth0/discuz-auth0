@@ -12,17 +12,17 @@ class table_common_member_auth0 extends discuz_table {
 
 		parent::__construct();
 	}
-	public function findByAuth0Id($id) {
-		return DB::fetch_first('SELECT * FROM %t a JOIN %t d ON a.id = d.uid WHERE auth0_id = %s', array($this->_table,'common_member', $id));
+	public function findByAuth0Id($uid) {
+		return DB::fetch_first('SELECT * FROM %t a JOIN %t d ON a.uid = d.uid WHERE auth0_id = %s', array($this->_table,'common_member', $uid));
 	}
 
 	public function bindUsers($auth0User, $auth0Member) {
-		$bind = array("id" => $auth0Member["uid"], "auth0_id" => $auth0User["user_id"], "is_bound"=>1);
+		$bind = array("uid" => $auth0Member["uid"], "auth0_id" => $auth0User["user_id"]);
 		return $this->insert($bind, false, true);
 	}
 
 	public function deleteByUid($uid) { 
-		return $uid ? DB::delete($this->_table, DB::field('id', $uid)) : false;
+		return $uid ? DB::delete($this->_table, DB::field('uid', $uid)) : false;
 	}
 }
 

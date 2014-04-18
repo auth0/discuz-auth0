@@ -14,15 +14,16 @@ function _redirect($url) {
 }
 
 $op = $_GET["op"];
-if ($op == "check") {
-	$settings = $_G['cache']['plugin']['auth0login'];
-	var_dump($settings);
-} else
 if ($op == "callback") {
 	// If the user is already login, show them home
 	if ($_G["uid"]) {
 		showmessage("You are already login", "/index.php");
 	}
+	// check the state
+	if ($_COOKIE['auth0state'] != $_GET['state']) {
+		showmessage("Wrong state, XSS attempt?");
+	}
+	
 	// Get the user information using the auth protocol
 	require_once "vendor/autoload.php";
 

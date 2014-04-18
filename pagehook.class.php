@@ -8,6 +8,8 @@ class plugin_auth0login {
 	function global_login_extra() {
 		global $_G;
 		$settings = $_G['cache']['plugin']['auth0login'];
+		$settings["state"] = uniqid();
+		setcookie ( "auth0state",$settings["state"], 0, "/", "", false, true );
 		include_once template('auth0login:widget');	
 		return tpl_auth0_login_widget($settings);
 	}
